@@ -1,0 +1,14 @@
+<!-- Save this file as /etc/dbus-1/system.d/com.example.DbusServiceC.conf -->
+<!-- Ensure the file has the correct permissions `ls -l` in  /etc/dbus-1/system.d/ should give  -->
+<!-- `-rw-r--r-- 1 root root` which should match the other services -->
+<!-- To edit the service name change "com.example.DbusServiceC" in the file name and body  -->
+<!-- Remove these comment lines before saving  -->
+
+<!DOCTYPE busconfig PUBLIC
+ "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">
+<busconfig>
+  <policy user="root">
+    <allow own="com.example.DbusServiceC"/>
+  </policy>
+</busconfig>

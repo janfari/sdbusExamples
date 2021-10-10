@@ -9,7 +9,9 @@ include_directories("${CMAKE_SOURCE_DIR}/src")
 set(SOURCE_FILES src/main.c)
 add_executable(dbusExample ${SOURCE_FILES}
 src/dbusClient.h
-src/dbusClient.c)
+src/dbusClient.c
+src/dbusServer.h
+src/dbusServer.c)
 
 install(TARGETS dbusExample
         DESTINATION ${CMAKE_INSTALL_PREFIX}/bin/)

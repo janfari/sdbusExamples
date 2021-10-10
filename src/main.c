@@ -4,6 +4,7 @@
 
 #include <systemd/sd-bus.h>
 #include "dbusClient.h"
+#include "dbusServer.h"
 
 /* This name is permitted in /etc/dbus-1/system.d/com.example.DbusServiceC.conf
  * To change this service name, the .conf will need to be edited accordingly */
@@ -13,6 +14,9 @@ sd_bus * bus = NULL;
 
 /**
  * @brief      Main loop to start and maintain the dbus framework
+ * @details    The main function forms a connection to the user bus, 
+ *             installs dbus objects, then enters an infinite loop to 
+ *             process new dbus calls.
  * @return     sdbusErr sd_bus error code
  **/
 int main()
@@ -27,9 +31,27 @@ int main()
     /* sd_bus calls return negative values to indicate errors */
     if (sdbusErr < 0)
     {
-        printf("D-Bus: Failed to connect to user bus:%s\n", strerror(-sdbusErr));
+        /* If you want to know more about the possible errors, something like this should 
+        give you a sense of what exists https://fossies.org/dox/glibc-2.34/errlist_8h_source.html */
+        printf("D-Bus Error: Failed to connect to user bus:%s\n", strerror(-sdbusErr));
         
         /* Clean up by releasing the bus */
+        sd_bus_unref(bus);
+        return sdbusErr;
+    }
+
+    /* Install an object A (We will use A as a server) */
+    sdbusErr = sd_bus_add_object_vtable(
+        bus,
+        NULL,
+        objA_objectPath,
+        objA_interfaceName,
+        objA_vtable,
+        NULL);
+
+    if (0 > sdbusErr)
+    {
+        printf("D-Bus Error: Failed to add object vtable: %s\n", strerror(-sdbusErr));
         sd_bus_unref(bus);
         return sdbusErr;
     }
@@ -39,7 +61,7 @@ int main()
 
     if (0 > sdbusErr)
     {
-        printf("D-Bus: Failed to request service name: %s\n", strerror(-sdbusErr));
+        printf("D-Bus Error: Failed to request service name: %s\n", strerror(-sdbusErr));
         sd_bus_unref(bus);
         return sdbusErr;
     }
@@ -51,7 +73,7 @@ int main()
 
         if (0 > sdbusErr)
         {
-            printf("D-Bus: Failed to process bus: %s\n", strerror(-sdbusErr));
+            printf("D-Bus Error: Failed to process bus: %s\n", strerror(-sdbusErr));
             /* We failed so try again with no delay */
             continue;
         }
@@ -61,7 +83,7 @@ int main()
 
         if (0 > sdbusErr)
         {
-            printf("D-Bus: Failed to wait for bus: %s\n", strerror(-sdbusErr));
+            printf("D-Bus Error: Failed to wait for bus: %s\n", strerror(-sdbusErr));
         }
 
     }

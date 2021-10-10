@@ -1,6 +1,6 @@
 /******************************************************************************
 * @file    dbusClient.c
-* @brief   
+* @brief
 ******************************************************************************/
 
 #include <stdlib.h>
@@ -8,12 +8,12 @@
 
 
 /**
- * @brief      Message handler for Object A Method 1
- * @note       In order for the function to work without causing dbus errors, 
- *             the signature and return sent in sd_bus_reply_method_return 
+ * @brief      Message handler for Object A Method 1. Example for strings and ints
+ * @note       In order for the function to work without causing dbus errors,
+ *             the signature and return sent in sd_bus_reply_method_return
  *             must correspond to what is defined in the vtable
  * @param[in]  msg - the incoming message
- * @param[in]  userdata - data defined withing the code to be passed to the handler (unused)
+ * @param[in]  userdata - data defined internally to be passed to the handler (unused)
  * @param[out] retError - D-Bus error to be passed back (unused)
  * @return     error code from D-Bus calls
  */
@@ -31,11 +31,12 @@ int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
     }
     else
     {
-        printf("Method 1 on Object A was called, string: %s, and int: %i, were recevied\n", receviedStr, receviedInt);
+        printf("Method 1 on Object A was called, string: %s and int: %i were recevied\n",
+        receviedStr, receviedInt);
     }
 
-    /* Send an int and a string as the reply */
-    sd_bus_reply_method_return(msg, "is", 123, "a string");
+    /* Send various int types and a string as the reply */
+    sd_bus_reply_method_return(msg, "uxqs", 1, 2, 3, "a string");
 
     return sdbusErr;
 }

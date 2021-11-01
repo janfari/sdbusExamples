@@ -5,6 +5,7 @@
 
 #include <stdlib.h>
 #include "dbusServer.h"
+#include "dbus.h"
 
 
 /**

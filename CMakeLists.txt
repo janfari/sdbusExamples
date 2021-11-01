@@ -8,6 +8,7 @@ include_directories("${CMAKE_SOURCE_DIR}/src")
 
 set(SOURCE_FILES src/main.c)
 add_executable(dbusExample ${SOURCE_FILES}
+src/dbus.h
 src/dbusClient.h
 src/dbusClient.c
 src/dbusServer.h

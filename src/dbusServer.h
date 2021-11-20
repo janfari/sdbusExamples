@@ -20,15 +20,15 @@ static const char objA_interfaceName[] = "com.example.ObjectA";
  See also man pages for sd_bus_add_object_vtable and sd_bus_message_append */
 static const sd_bus_vtable objA_vtable[] = {
     SD_BUS_VTABLE_START(0),
-    /* Example with strings and various int types */
+    /* Example method with strings and various int types */
     SD_BUS_METHOD_WITH_NAMES(
-        "Method1",
-        "si", SD_BUS_PARAM(MsgString) SD_BUS_PARAM(Msg32Int),
+        "Method1_1",
+        "si", SD_BUS_PARAM(msgString) SD_BUS_PARAM(msg32Int),
         "uxqs",
-        SD_BUS_PARAM(Reply32UInt)
-        SD_BUS_PARAM(Reply64UInt)
-        SD_BUS_PARAM(Reply16Int)
-        SD_BUS_PARAM(ReplyString),
+        SD_BUS_PARAM(reply32UInt)
+        SD_BUS_PARAM(reply64UInt)
+        SD_BUS_PARAM(reply16Int)
+        SD_BUS_PARAM(replyString),
         method1Handler,
         SD_BUS_VTABLE_UNPRIVILEGED),
     SD_BUS_VTABLE_END

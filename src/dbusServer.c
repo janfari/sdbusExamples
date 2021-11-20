@@ -21,19 +21,19 @@
 int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
 {
     int sdbusErr = 0;
-    int receviedInt = 0;
-    const char* receviedStr = NULL;
+    int receivedInt = 0;
+    const char* receivedStr = NULL;
 
     /* Read the D-Bus message */
-    sdbusErr = sd_bus_message_read(msg, "si", &receviedStr, &receviedInt);
+    sdbusErr = sd_bus_message_read(msg, "si", &receivedStr, &receivedInt);
     if (0 > sdbusErr)
     {
         printf("D-Bus Error: Failed to read message: %s\n", strerror(-sdbusErr));
     }
     else
     {
-        printf("Method 1 on Object A was called, string: %s and int: %i were recevied\n",
-        receviedStr, receviedInt);
+        printf("Method 1 on Object A was called, string: %s and int: %i were received\n",
+        receivedStr, receivedInt);
     }
 
     /* Send various int types and a string as the reply */

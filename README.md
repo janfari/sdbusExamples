@@ -47,11 +47,24 @@ You can also use d-feet to call methods
     string ":1.414"
     string ":1.414"
     string ""
-  
+
   method call time=1633748556.627750 sender=:1.415 -> destination=org.freedesktop.DBus serial=1 path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=Hello
-  
+
   method return time=1633748556.627837 sender=org.freedesktop.DBus -> destination=:1.415 serial=1 reply_serial=1
     string ":1.415"
 
   ```
 
+# General dbus info
+
+## Signals & Methods
+A signal is a one part broadcast. A service sends out a message without receiving a reply.
+> For example: The temp monitor will send out a signal when the temp changes. The main service can subscribe to this signal and trigger internal callbacks when a new signal is received.
+
+A method consists of two parts, a received message and a sent reply. A method is called by another service.
+> For example: The main service periodically sends update requests to the temp monitor (by calling the method) and the temp monitor replies with the updated temperature
+
+## Servers & Clients
+Each service can act as a server or a client with regards to another service. A server may have methods that clients can call and it may send out signals that clients can subscribe to. A single service can be both a server and a client at the same time.
+
+> For example: The main service wants to receive messages about the temperature from the temp monitor and send messages to the fan controller. The temp monitor could act as a server and send out signals when the temperature changes, the main service would subscribe to that signal as a client. The main service could simultaneously act as a server and create a method which the fan controller (client) polls to give its status and receive new speed settings in the reply.

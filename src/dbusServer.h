@@ -8,8 +8,11 @@
 
 #include <systemd/sd-bus.h>
 
+/* Method handlers*/
 int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError);
+int sendSignal1(sd_bus_message *msg, void *userdata, sd_bus_error *retError);
 
+/* Interface and path name strings */
 static const char objA_objectPath[] = "/ObjectAPath";
 static const char objA_interfaceName[] = "com.example.ObjectA";
 
@@ -31,6 +34,18 @@ static const sd_bus_vtable objA_vtable[] = {
         SD_BUS_PARAM(replyString),
         method1Handler,
         SD_BUS_VTABLE_UNPRIVILEGED),
+    /* Empty method which triggers Signal 1 for example purposes */
+    SD_BUS_METHOD(
+        "Method2",
+        "",
+        "",
+        sendSignal1,
+        SD_BUS_VTABLE_UNPRIVILEGED),
+    /* Signal 1, triggered by sendSignal1(), sends a byte array */
+    SD_BUS_SIGNAL_WITH_NAMES("Signal1",
+                             "ay",
+                             SD_BUS_PARAM(signalByteArray),
+                             0),
     SD_BUS_VTABLE_END
 };
 

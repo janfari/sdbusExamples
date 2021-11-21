@@ -9,8 +9,8 @@
 #include <systemd/sd-bus.h>
 
 /* Method handlers*/
-int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError);
-int sendSignal1(sd_bus_message *msg, void *userdata, sd_bus_error *retError);
+int method1Handler(sd_bus_message *pMsg, void *pUserdata, sd_bus_error *pRetError);
+int sendSignal1(sd_bus_message *pMsg, void *pUserdata, sd_bus_error *pRetError);
 
 /* Interface and path name strings */
 static const char objA_objectPath[] = "/ObjectAPath";
@@ -48,5 +48,6 @@ static const sd_bus_vtable objA_vtable[] = {
                              0),
     SD_BUS_VTABLE_END
 };
+
 
 #endif //_DBUS_SERVER_

@@ -12,7 +12,7 @@
 #include "dbusServer.h"
 
 /* This name is permitted in /etc/dbus-1/system.d/com.example.DbusServiceC.conf
- * To change this service name, the .conf will need to be edited accordingly */
+ To change this service name, the .conf will need to be edited accordingly */
 const char dbusServiceName[] = "com.example.DbusServiceC";
 sd_bus * pBus = NULL;
 
@@ -31,14 +31,14 @@ int main()
     /* Connect to the user (session) bus. */
     sdbusErr = sd_bus_default_user(&pBus);
     /* This would connect you to the system bus instead
-    sdbusErr = sd_bus_default_system(&pBus); */
+     sdbusErr = sd_bus_default_system(&pBus); */
 
     /* sd_bus calls return negative values to indicate errors */
     if (sdbusErr < 0)
     {
         /* If you want to know more about the possible errors,
-        something like this should give you a sense of what exists
-        https://fossies.org/dox/glibc-2.34/errlist_8h_source.html */
+         something like this should give you a sense of what exists
+         https://fossies.org/dox/glibc-2.34/errlist_8h_source.html */
         printf("D-Bus Error: Failed to connect to user bus:%s\n", strerror(-sdbusErr));
 
         /* Clean up by releasing the bus */

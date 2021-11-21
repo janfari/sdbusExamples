@@ -8,7 +8,8 @@
 
 #include <systemd/sd-bus.h>
 
-int signalCallback(sd_bus_message *msg, void *userdata, sd_bus_error *retError);
+/* Callback Handlers */
+int signalCallback(sd_bus_message *pMsg, void *pUserdata, sd_bus_error *pRetError);
 
 /* Interface and path name strings  */
 static const char objB_objectPath[] = "/ObjectBPath";

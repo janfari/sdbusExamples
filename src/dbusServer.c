@@ -14,19 +14,19 @@
  * @note       In order for the function to work without causing dbus errors,
  *             the signature and return sent in sd_bus_reply_method_return
  *             must correspond to what is defined in the vtable
- * @param[in]  msg - the incoming message
- * @param[in]  userdata - data defined internally to be passed to the handler (unused)
- * @param[out] retError - D-Bus error to be passed back (unused)
+ * @param[in]  pMsg - the incoming message
+ * @param[in]  pUserdata - data defined internally to be passed to the handler (unused)
+ * @param[out] pRetError - D-Bus error to be passed back (unused)
  * @return     error code from D-Bus calls
  */
-int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
+int method1Handler(sd_bus_message *pMsg, void *pUserdata, sd_bus_error *pRetError)
 {
     int sdbusErr = 0;
     int receivedInt = 0;
     const char* receivedStr = NULL;
 
     /* Read the D-Bus message */
-    sdbusErr = sd_bus_message_read(msg, "si", &receivedStr, &receivedInt);
+    sdbusErr = sd_bus_message_read(pMsg, "si", &receivedStr, &receivedInt);
     if (0 > sdbusErr)
     {
         printf("D-Bus Error: Failed to read message: %s\n", strerror(-sdbusErr));
@@ -38,7 +38,7 @@ int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
     }
 
     /* Send various int types and a string as the reply */
-    sd_bus_reply_method_return(msg, "uxqs", 1, 2, 3, "a string");
+    sd_bus_reply_method_return(pMsg, "uxqs", 1, 2, 3, "a string");
 
     return sdbusErr;
 }
@@ -48,19 +48,19 @@ int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
  * @note       This is not typical usage, normally a signal would be triggered from
  *             elsewhere in the code. This method is included to easily trigger a signal
  *             from d-feet as an example.
- * @param[in]  msg - the incoming message (unused)
- * @param[in]  userdata - data defined internally to be passed to the handler (unused)
- * @param[out] retError - D-Bus error to be passed back (unused)
+ * @param[in]  pMsg - the incoming message (unused)
+ * @param[in]  pUserdata - data defined internally to be passed to the handler (unused)
+ * @param[out] pRetError - D-Bus error to be passed back (unused)
  * @return     error code from D-Bus calls
  */
-int sendSignal1(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
+int sendSignal1(sd_bus_message *pMsg, void *pUserdata, sd_bus_error *pRetError)
 {
     int sdbusErr = 0;
     uint8_t byteArray[4] = {0xab, 0xcd, 0x12, 0x34};
     sd_bus_message * pOutMessage = NULL;
 
     /* We have to reply even though it's empty */
-    sd_bus_reply_method_return(msg, "");
+    sd_bus_reply_method_return(pMsg, "");
 
     /* Emit a signal. Usually this would go to another service (kind of silly to send a
      signal to yourself) but we are listening to ourselves in ObjB for ease of example.

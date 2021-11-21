@@ -1,4 +1,4 @@
-# DbusExamples
+# sdbusExamples
 Example code in C using the linux sd-bus library
 
 In needing to work with this library for a project I found the documentation sparse and the examples limited. My hope is that this repo can serve as a jumping off point for others in the future.

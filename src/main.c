@@ -55,6 +55,25 @@ int main()
         objA_vtable,
         NULL);
 
+    /* Install an object B (We will use B as a client) */
+    sdbusErr = sd_bus_add_object_vtable(
+        pBus,
+        NULL,
+        objB_objectPath,
+        objB_interfaceName,
+        objB_vtable,
+        NULL);
+
+    /* Subscribe to the Signal1 signal being send by object A */
+    sd_bus_match_signal(pBus,
+                        NULL,               /* Slot, NULL binds to bus lifetime */
+                        dbusServiceName,    /* Signal emitter name */
+                        objA_objectPath,    /* Signal emitter path */
+                        objA_interfaceName, /* Signal emitter interface */
+                        "Signal1",          /* Signal name */
+                        signalCallback,     /* Callback function */
+                        NULL);              /* Arbitrary data passed to callback */
+
     if (0 > sdbusErr)
     {
         printf("D-Bus Error: Failed to add object vtable: %s\n", strerror(-sdbusErr));

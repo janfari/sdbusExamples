@@ -56,20 +56,35 @@ int method1Handler(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
 int sendSignal1(sd_bus_message *msg, void *userdata, sd_bus_error *retError)
 {
     int sdbusErr = 0;
-    char byteArray[] = {0xde, 0xad, 0xc0, 0xde};
+    uint8_t byteArray[4] = {0xab, 0xcd, 0x12, 0x34};
+    sd_bus_message * pOutMessage = NULL;
 
-    /* We have to reply even though its empty */
+    /* We have to reply even though it's empty */
     sd_bus_reply_method_return(msg, "");
 
-
     /* Emit a signal. Usually this would go to another service (kind of silly to send a
-     signal to yourself) but we are listening to ourselves in ObjB for ease of example */
+     signal to yourself) but we are listening to ourselves in ObjB for ease of example.
+     Arrays are a little fussy in dbus afaik you can't use them directly in
+     sd_bus_emit_signal, sending an array can be done in three parts like this: */
+    sdbusErr = sd_bus_message_new_signal(pBus,
+                                  &pOutMessage,
+                                  objA_objectPath,    /* Signal emitter path */
+                                  objA_interfaceName, /* Signal emitter interface */
+                                  "Signal1");         /* Signal name */
+    sdbusErr = sd_bus_message_append_array(pOutMessage, 'y', byteArray, sizeof(byteArray));
+    sdbusErr = sd_bus_send(pBus, pOutMessage, NULL);
+
+    /* Adding each element individually is also possible though impractical, like this:*/
     sdbusErr = sd_bus_emit_signal(pBus,
-                                  objB_objectPath,
-                                  objB_interfaceName,
-                                  "Signal1",
-                                  "y",
-                                  byteArray);
+                                  objA_objectPath,    /* Signal emitter path */
+                                  objA_interfaceName, /* Signal emitter interface */
+                                  "Signal1",          /* Signal name */
+                                  "ay",
+                                  5,                           /* Length of array */
+                                  0x00, 0x11, 0x22, 0x33, 0x44 /* Array bytes */
+                                  );
+
+    printf("Method 2 on Object A was called, Signal 1 emitted\n");
 
     return sdbusErr;
 }
